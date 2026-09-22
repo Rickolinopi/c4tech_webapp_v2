@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>CTECH</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+{% if session.get('user_id') and request.endpoint not in ['login', 'cadastro'] %}
+
+<header class="topbar">
+
+    <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+        aria-label="Abrir menu">
+
+        ☰
+
+    </button>
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="brand-logo">
+
+        <img
+            src="{{ url_for('static', filename='c4techLogo.png') }}"
+            alt="CTECH">
+
+    </a>
+
+</header>
+
+
+<div
+    class="menu-overlay"
+    id="menuOverlay">
+</div>
+
+
+<aside
+    class="side-menu"
+    id="sideMenu">
+
+    <div class="side-menu-header">
+
+        <button
+            class="close-menu"
+            id="closeMenu"
+            type="button">
+
+            ×
+
+        </button>
+
+    </div>
+
+
+    <nav class="menu-nav">
+
+        <a href="{{ url_for('dashboard') }}">
+            <span>📦</span>
+            Estoque
+        </a>
+
+
+        <a href="{{ url_for('novo_produto') }}">
+            <span>➕</span>
+            Novo produto
+        </a>
+
+
+        <a href="{{ url_for('pedidos') }}">
+            <span>📋</span>
+            Status do pedido
+        </a>
+
+    </nav>
+
+
+    <div class="menu-bottom">
+
+        <a href="{{ url_for('logout') }}">
+            <span>🚪</span>
+            Sair
+        </a>
+
+    </div>
+
+</aside>
+
+{% endif %}
+
+
+<main>
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            <div class="flash-messages">
+
+                {% for message in messages %}
+
+                    <div class="flash-message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    {% block content %}{% endblock %}
+
+</main>
+
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+
+<script>
+
+const menuButton =
+    document.getElementById("menuButton");
+
+const closeMenu =
+    document.getElementById("closeMenu");
+
+const sideMenu =
+    document.getElementById("sideMenu");
+
+const menuOverlay =
+    document.getElementById("menuOverlay");
+
+
+function openMenu() {
+
+    if (sideMenu) {
+
+        sideMenu.classList.add("open");
+
+    }
+
+    if (menuOverlay) {
+
+        menuOverlay.classList.add("active");
+
+    }
+
+}
+
+
+function closeSideMenu() {
+
+    if (sideMenu) {
+
+        sideMenu.classList.remove("open");
+
+    }
+
+    if (menuOverlay) {
+
+        menuOverlay.classList.remove("active");
+
+    }
+
+}
+
+
+if (menuButton) {
+
+    menuButton.addEventListener(
+        "click",
+        openMenu
+    );
+
+}
+
+
+if (closeMenu) {
+
+    closeMenu.addEventListener(
+        "click",
+        closeSideMenu
+    );
+
+}
+
+
+if (menuOverlay) {
+
+    menuOverlay.addEventListener(
+        "click",
+        closeSideMenu
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>

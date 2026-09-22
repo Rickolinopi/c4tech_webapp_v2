@@ -1,0 +1,61 @@
+{% extends 'base.html' %}{% block content %}
+<section class="screen">
+
+<h1>Pedido nº {{ '%03d'|format(order.id) }}</h1>
+
+<div class="info">
+    <b>CLIENTE: {{ order.client }}</b>
+    <span>PROJETO: {{ order.project }}</span>
+    <span>MÁQUINA: {{ order.machine }}</span>
+</div>
+
+<h2>Materiais utilizados</h2>
+
+<table>
+<thead>
+<tr>
+    <th>MATERIAL</th>
+    <th>QTD</th>
+</tr>
+</thead>
+
+<tbody>
+{% for i in items %}
+<tr>
+    <td>{{ i.name }}</td>
+    <td>{{ i.quantity }}</td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="2">Nenhum material registrado.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h2>Status do pedido</h2>
+
+<div class="status-actions">
+
+<button
+    class="status-btn {{ 'active' if order.status == 'EM ANDAMENTO' else '' }}"
+    onclick="setStatus({{ order.id }}, 'EM ANDAMENTO')">
+    EM ANDAMENTO
+</button>
+
+<button
+    class="status-btn {{ 'active' if order.status == 'FINALIZADO' else '' }}"
+    onclick="setStatus({{ order.id }}, 'FINALIZADO')">
+    FINALIZADO
+</button>
+
+</div>
+
+<p id="statusMsg" class="status-message">
+    Status atual: <b>{{ order.status }}</b>
+</p>
+
+<a class="link" href="{{ url_for('pedidos') }}">Voltar</a>
+
+</section>
+{% endblock %}

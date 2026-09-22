@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% block content %}
+<section class="screen">
+<h1>Novo produto</h1>
+<form method="post" enctype="multipart/form-data" class="form">
+<label>Nome<input name="name" placeholder="NOME" required></label>
+<label>ID<input name="product_id" placeholder="ID" required></label>
+<label>Quantidade<input name="quantity" type="number" min="0" placeholder="QUANTIDADE" value="0"></label>
+<label class="upload"><input type="file" name="image" accept="image/*" onchange="previewImage(this)"><div id="preview">📷<span>Adicionar imagem</span></div></label>
+<button class="primary">Prosseguir</button>
+</form>
+<a class="link" href="{{ url_for('dashboard') }}">Voltar</a>
+</section>{% endblock %}

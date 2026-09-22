@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="dashboard">
+
+    <div class="dashboard-title">
+
+        <span>
+            Bem-vindo ao CTECH
+        </span>
+
+        <h1>
+            Dashboard
+        </h1>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📦
+            </div>
+
+            <span>
+                Total de produtos
+            </span>
+
+            <strong>
+                {{ products|length }}
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📋
+            </div>
+
+            <span>
+                Total de pedidos
+            </span>
+
+            <strong>
+                {{ orders|length }}
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card warning">
+
+            <div class="stat-icon">
+                ⚠️
+            </div>
+
+            <span>
+                Estoque baixo
+            </span>
+
+            <strong>
+                {{ products|selectattr('quantity', 'le', 5)|list|length }}
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🔄
+            </div>
+
+            <span>
+                Em andamento
+            </span>
+
+            <strong>
+                {{ orders|selectattr('status', 'equalto', 'EM ANDAMENTO')|list|length }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="quick-actions">
+
+        <a
+            href="{{ url_for('novo_produto') }}"
+            class="quick-card">
+
+            <div class="quick-icon">
+                +
+            </div>
+
+            <div>
+
+                <strong>
+                    Novo produto
+                </strong>
+
+                <span>
+                    Cadastrar material no estoque
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('novo_pedido') }}"
+            class="quick-card">
+
+            <div class="quick-icon">
+                +
+            </div>
+
+            <div>
+
+                <strong>
+                    Novo pedido
+                </strong>
+
+                <span>
+                    Criar um novo pedido
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+    <section class="dashboard-section">
+
+        <div class="section-title">
+
+            <h2>
+                Estoque
+            </h2>
+
+            <a href="{{ url_for('dashboard') }}">
+                Ver todos
+            </a>
+
+        </div>
+
+
+        <div class="stock-grid">
+
+            {% for p in products[:6] %}
+
+            <article class="stock-card">
+
+                <div class="stock-image">
+
+                    {% if p.image %}
+
+                    <img
+                        src="{{ url_for('static', filename='uploads/' + p.image) }}"
+                        alt="{{ p.name }}">
+
+                    {% else %}
+
+                    <span>
+                        📦
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="stock-info">
+
+                    <div class="stock-name">
+
+                        <strong>
+                            {{ p.name }}
+                        </strong>
+
+
+                        {% if p.quantity <= 5 %}
+
+                        <span class="badge low">
+                            ESTOQUE BAIXO
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge normal">
+                            NORMAL
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <small>
+                        Código: {{ p.product_code }}
+                    </small>
+
+
+                    <strong class="quantity">
+                        {{ p.quantity }} unidades
+                    </strong>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('atualizar_produto', product_id=p.id) }}"
+                    class="edit">
+
+                    Editar
+
+                </a>
+
+            </article>
+
+            {% else %}
+
+            <div class="empty">
+                Nenhum produto cadastrado.
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-section">
+
+        <div class="section-title">
+
+            <h2>
+                Pedidos recentes
+            </h2>
+
+            <a href="{{ url_for('pedidos') }}">
+                Ver pedidos
+            </a>
+
+        </div>
+
+
+        <div class="recent-orders">
+
+            {% for o in orders %}
+
+            <article class="recent-order">
+
+                <div>
+
+                    <strong>
+                        Pedido nº {{ '%03d'|format(o.id) }}
+                    </strong>
+
+                    <span>
+                        {{ o.client }}
+                    </span>
+
+                </div>
+
+
+                <span
+                    class="order-status {{ 'finished' if o.status == 'FINALIZADO' else '' }}">
+
+                    {{ o.status }}
+
+                </span>
+
+
+                <a
+                    href="{{ url_for('detalhe_pedido', order_id=o.id) }}">
+
+                    Detalhes
+
+                </a>
+
+            </article>
+
+            {% else %}
+
+            <div class="empty">
+                Nenhum pedido encontrado.
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}

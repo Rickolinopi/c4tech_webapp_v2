@@ -1,0 +1,42 @@
+{% extends 'base.html' %}{% block content %}
+<section class="screen">
+
+<h1>Status do pedido</h1>
+
+<a href="{{ url_for('novo_pedido') }}" class="primary new-order">
+    + Novo pedido
+</a>
+
+<div class="order-list">
+{% for o in orders %}
+
+<article class="order-status">
+
+<div>
+<b>Pedido nº {{ '%03d'|format(o.id) }}</b>
+<small>{{ o.client }}</small>
+</div>
+
+<span class="status {{ 'done' if o.status == 'FINALIZADO' else '' }}">
+    {{ o.status }}
+</span>
+
+<div class="order-actions">
+    <a href="{{ url_for('detalhe_pedido', order_id=o.id) }}">Detalhes</a>
+
+    <form method="post"
+          action="{{ url_for('excluir_pedido', order_id=o.id) }}"
+          onsubmit="return confirm('Tem certeza que deseja excluir este pedido?');">
+        <button type="submit" class="delete-order">Excluir</button>
+    </form>
+</div>
+
+</article>
+
+{% else %}
+<p class="empty">Nenhum pedido encontrado.</p>
+{% endfor %}
+</div>
+
+</section>
+{% endblock %}

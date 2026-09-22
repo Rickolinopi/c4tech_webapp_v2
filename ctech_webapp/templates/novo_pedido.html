@@ -1,0 +1,73 @@
+{% extends 'base.html' %}{% block content %}
+<section class="screen">
+
+<h1>Novo pedido</h1>
+
+<div class="order-form-header">
+    <span>Preencha os dados do pedido</span>
+</div>
+
+<form method="post" class="form">
+
+<label>
+    Cliente
+    <input name="client" placeholder="Nome do cliente" required>
+</label>
+
+<label>
+    Projeto
+    <input name="project" placeholder="Nome do projeto" required>
+</label>
+
+<label>
+    Máquina
+    <input name="machine" placeholder="Máquina" required>
+</label>
+
+<h2>Materiais do pedido</h2>
+
+<div class="product-selection">
+
+{% for product in products %}
+
+<div class="product-order">
+
+    <div class="product-order-info">
+        <b>{{ product.name }}</b>
+        <small>Código: {{ product.product_code }}</small>
+        <small>Disponível: {{ product.quantity }} unidades</small>
+    </div>
+
+    <div class="quantity-control">
+        <span>Qtd.</span>
+        <input
+            name="quantity_{{ product.id }}"
+            type="number"
+            min="0"
+            max="{{ product.quantity }}"
+            value="0"
+        >
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="empty">
+    Nenhum produto cadastrado.
+</div>
+
+{% endfor %}
+
+</div>
+
+<button type="submit" class="primary">
+    Criar pedido
+</button>
+
+</form>
+
+<a class="link" href="{{ url_for('pedidos') }}">Voltar</a>
+
+</section>
+{% endblock %}

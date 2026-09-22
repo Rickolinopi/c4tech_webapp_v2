@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="screen auth-screen">
+
+    <div class="auth-logo">
+
+        <img
+            src="{{ url_for('static', filename='c4techLogo.png') }}"
+            alt="CTECH">
+
+    </div>
+
+
+    <h1 class="auth-title">
+        Login
+    </h1>
+
+
+    <form
+        method="post"
+        class="form">
+
+        <input
+            type="text"
+            name="login"
+            placeholder="CPF ou E-MAIL"
+            required
+            autocomplete="username">
+
+
+        <input
+            type="password"
+            name="password"
+            placeholder="SENHA"
+            required
+            autocomplete="current-password">
+
+
+        <button
+            type="submit"
+            class="primary">
+
+            Entrar
+
+        </button>
+
+    </form>
+
+
+    <a
+        href="{{ url_for('cadastro') }}"
+        class="register-area">
+
+        <span>
+            Ainda não possui cadastro?
+        </span>
+
+        <strong>
+            Criar conta
+        </strong>
+
+    </a>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}{% block content %}
+<section class="screen">
+<h1>Atualização de produto</h1>
+
+<div class="current">
+<b>{{ product.name }}</b>
+<small>ID: {{ product.product_code }}</small>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="form">
+<label>Quantidade atual
+<input value="{{ product.quantity }}" disabled>
+</label>
+
+<label>Entrada de quantidade
+<input name="quantity" type="number" min="0" value="{{ product.quantity }}" required>
+</label>
+
+<label class="upload">
+<input type="file" name="image" accept="image/*" onchange="previewImage(this)">
+<div id="preview">
+{% if product.image %}
+<img src="{{ url_for('static',filename='uploads/'+product.image) }}">
+{% else %}
+📷<span>Atualizar imagem</span>
+{% endif %}
+</div>
+</label>
+
+<button class="primary">Atualizar</button>
+</form>
+
+<form method="post" action="{{ url_for('excluir_produto', product_id=product.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este produto?');">
+<button type="submit" class="delete-button">Excluir produto</button>
+</form>
+
+<a class="link" href="{{ url_for('dashboard') }}">Voltar</a>
+
+</section>{% endblock %}

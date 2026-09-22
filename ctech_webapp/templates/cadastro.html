@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="screen auth-screen">
+
+    <div class="auth-logo">
+
+        <img
+            src="{{ url_for('static', filename='c4techLogo.png') }}"
+            class="cadastro-logo"
+            alt="CTECH">
+
+    </div>
+
+
+    <h1 class="cadastro-title">
+        Cadastro
+    </h1>
+
+
+    <form
+        method="post"
+        class="form"
+        onsubmit="return validateCadastro()">
+
+
+        <div class="cadastro-grid">
+
+            <input
+                type="text"
+                name="cpf"
+                id="cpf"
+                placeholder="CPF"
+                maxlength="14"
+                inputmode="numeric"
+                autocomplete="off"
+                required
+                oninput="formatarCPF(this)">
+
+
+            <input
+                type="text"
+                name="name"
+                placeholder="NOME"
+                required>
+
+
+            <input
+                type="email"
+                name="email"
+                placeholder="E-MAIL"
+                required>
+
+
+            <input
+                type="text"
+                name="role"
+                placeholder="CARGO">
+
+
+            <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="SENHA"
+                minlength="6"
+                required>
+
+
+            <input
+                type="password"
+                name="password_confirm"
+                id="password_confirm"
+                placeholder="CONFIRMAR SENHA"
+                minlength="6"
+                required>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="primary">
+
+            Prosseguir
+
+        </button>
+
+    </form>
+
+
+    <a
+        class="link"
+        href="{{ url_for('login') }}">
+
+        Voltar
+
+    </a>
+
+</section>
+
+
+<script>
+
+function formatarCPF(input) {
+
+    let cpf = input.value.replace(
+        /\D/g,
+        ''
+    );
+
+    cpf = cpf.substring(
+        0,
+        11
+    );
+
+
+    if (cpf.length > 9) {
+
+        cpf = cpf.replace(
+            /(\d{3})(\d{3})(\d{3})(\d{1,2})/,
+            '$1.$2.$3-$4'
+        );
+
+    }
+
+    else if (cpf.length > 6) {
+
+        cpf = cpf.replace(
+            /(\d{3})(\d{3})(\d{1,3})/,
+            '$1.$2.$3'
+        );
+
+    }
+
+    else if (cpf.length > 3) {
+
+        cpf = cpf.replace(
+            /(\d{3})(\d{1,3})/,
+            '$1.$2'
+        );
+
+    }
+
+
+    input.value = cpf;
+
+}
+
+
+function validateCadastro() {
+
+    const cpf =
+        document.getElementById('cpf').value;
+
+    const password =
+        document.getElementById('password').value;
+
+    const confirm =
+        document.getElementById('password_confirm').value;
+
+
+    const cpfNumeros =
+        cpf.replace(/\D/g, '');
+
+
+    if (cpfNumeros.length !== 11) {
+
+        alert(
+            'O CPF deve conter exatamente 11 dígitos.'
+        );
+
+        return false;
+
+    }
+
+
+    if (password.length < 6) {
+
+        alert(
+            'A senha deve ter pelo menos 6 caracteres.'
+        );
+
+        return false;
+
+    }
+
+
+    if (password !== confirm) {
+
+        alert(
+            'As senhas não coincidem.'
+        );
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+</script>
+
+{% endblock %}
